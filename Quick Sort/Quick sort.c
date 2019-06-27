@@ -1,37 +1,80 @@
 //quando o numero de elementos de um vetor for maior que 20 chamar o quick sort menor que 20 chamar o insertion ou bublle sort
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+typedef struct fabricante{
+	char nome[50];
+	char nacionalidade[20];
+	int ano;
+}fabricante;
 
-void swap(int *a, int*b){
-	int tmp;
+void printar(fabricante *vet, int n){
+	int i;
+	for(i=0; i<n; i++){
+		printf("fabricante[%d]: \n",i);
+		printf(" Nome: %s \n", vet[i].nome);
+		printf(" Nacionalidade: %s \n", vet[i].nacionalidade);
+		printf(" Fundada em: %d \n\n", vet[i].ano);
+	}
+}
+
+void preencher(fabricante *fabricantes){
+	strcpy(fabricantes[0].nome,"coc");
+	strcpy(fabricantes[0].nacionalidade,"chileno");
+	fabricantes[0].ano = 2000;
+	strcpy(fabricantes[1].nome,"ful");
+	strcpy(fabricantes[1].nacionalidade,"argentino");
+	fabricantes[1].ano = 2010;
+	strcpy(fabricantes[2].nome,"boz");
+	strcpy(fabricantes[2].nacionalidade,"americano");
+	fabricantes[2].ano = 1950;
+	strcpy(fabricantes[3].nome,"zap");
+	strcpy(fabricantes[3].nacionalidade,"mexicano");
+	fabricantes[3].ano = 1999;
+	strcpy(fabricantes[4].nome,"mas");
+	strcpy(fabricantes[4].nacionalidade,"chines");
+	fabricantes[4].ano = 1940;
+	strcpy(fabricantes[5].nome,"alol");
+	strcpy(fabricantes[5].nacionalidade,"britanico");
+	fabricantes[5].ano = 2018;
+	strcpy(fabricantes[6].nome,"cool");
+	strcpy(fabricantes[6].nacionalidade,"africano");
+	fabricantes[6].ano = 1961;
+	strcpy(fabricantes[7].nome,"ziz");
+	strcpy(fabricantes[7].nacionalidade,"polones");
+	fabricantes[7].ano = 2019;
+}
+
+void swap(fabricante *a, fabricante*b){
+	fabricante tmp;
 	tmp = *a;
 	*a = *b;
 	*b = tmp;
 }
 
-int particao (int* vetor, int inicio, int fim){
-	int pivo = vetor[inicio], i = inicio+1, f=fim;
+int particao (fabricante* v, int inicio, int fim){
+	struct fabricante pivo = v[inicio]; 
+	int i = inicio+1, f=fim;
 	while(i<=f){
-		if(vetor[i]<pivo){
+		if((strcmp(v[i].nome, pivo.nome) < 0) || (strcmp(v[i].nome,pivo.nome) == 0 && strcmp(v[i].nacionalidade,pivo.nacionalidade)<0)
+              || (strcmp(v[i].nacionalidade,pivo.nacionalidade) == 0 && v[i].ano <pivo.ano)){
 			i++;
-		}else if(pivo<vetor[f]){
+		}else if((strcmp(pivo.nome, v[f].nome) < 0) || (strcmp(pivo.nome,v[f].nome) == 0 && strcmp(pivo.nacionalidade,v[f].nacionalidade)<0)
+              || (strcmp(pivo.nacionalidade,v[f].nacionalidade) == 0 && pivo.ano < v[f].ano)){
 			f--;
 		}else{
-			swap(&vetor[i], &vetor[f]);
+			swap(&v[i], &v[f]);
 			i++;
 			f--;
 		}
 	}
-	vetor[inicio] = vetor[f];
-	vetor[f] = pivo;
+	v[inicio] = v[f];
+	v[f] = pivo;
 	return f;
 }
 
-void quickSort(int *v, int ini, int fim){
+void quickSort(fabricante *v, int ini, int fim){
 	int meio;
-	if((fim-ini)+1 <= 20){
-		//chamar o insertion sort aqui
-	}
 	if(ini<fim){
 		meio = particao(v,ini,fim);
 		quickSort(v,ini,meio);
@@ -39,32 +82,10 @@ void quickSort(int *v, int ini, int fim){
 	}
 }
 
-void escreveVetor(int *vet, int n){
-	int i;
-	for(i=0; i<n; i++){
-		printf("vet[%d] vale %d \n", i, vet[i]);
-	}
-	printf("\n\n");
-}
-
 int main (){
-	int vet[100] = { 7 , 8 , 3 , 4 , 5 , 6,
-                     1 , 2 , 9 , 10 , 11 , 12,
-                     19 , 14 , 15 , 16 , 17 , 18,
-                     13 , 26 , 21 , 22 , 23 , 24,
-                     31 , 20 , 27 , 28 , 29 , 30,
-                     25 , 38 , 33 , 34 , 35 , 36,
-                     43 , 32 , 39 , 40 , 41 , 42,
-                     37 , 50 , 45 , 46 , 47 , 48,
-                     55 , 44 , 51 , 52 , 53 , 54,
-                     49 , 62 , 57 , 58 , 59 , 60,
-                     61 , 56 , 63 , 64 , 65 , 66,
-                     67 , 74 , 69 , 70 , 71 , 72,
-                     73 , 68 , 75 , 76 , 77 , 78,
-                     79 , 86 , 81 , 82 , 83 , 84,
-                     85 , 80 , 87 , 88 , 89 , 90,
-                     91 , 98 , 93 , 94 , 95 , 96,
-                     97 , 92 , 99 , 100 };
-	quickSort(vet,0,99);
-	escreveVetor(vet,100);
+	fabricante fabricantes[8];
+	preencher(fabricantes);
+	quickSort(fabricantes,0,7);
+	printar(fabricantes, 8);
+	return 0;
 }
